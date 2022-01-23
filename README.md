@@ -102,7 +102,7 @@ USE mains.py just follow the comments.
 Pull RSS-->Compare data + input data-->Calculate the updated data-->Incoming download extraction function-->Send file-->Delete file tree
 
 
-![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/TELE/docs/workflow.png)
+![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/main/docs/workflow.png)
 
 
 
