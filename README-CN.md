@@ -64,9 +64,9 @@ Tips: 如果您使用action部署，建议只设置提取flac。
 
 **Add Repository secrets**
 ```
->token 
->id 
->rss
+>token
+>objectID
+>rssurl
 ```
 ```
 token = ***** # bot token，use tg@BotFather，自行google
