@@ -48,12 +48,12 @@ jobs:
         datime=$(date "+%Y年%m月%d日 %H:%M")
         echo "git commit: 上传于 $datime"
         if [ -n "$(git status -s)" ];then
+            git pull
             git add .
             git commit -m "上传于 $datime" -a
         fi
     - name: Push changes
-      uses: ad-m/github-push-action@main 
+      uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        # 必须改成现在分支
    
