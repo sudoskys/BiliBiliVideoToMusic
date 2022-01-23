@@ -48,7 +48,7 @@ jobs:
         datime=$(date "+%Y年%m月%d日 %H:%M")
         echo "git commit: 上传于 $datime"
         if [ -n "$(git status -s)" ];then
-            git pull
+            # git pull
             git add .
             git commit -m "上传于 $datime" -a
         fi
