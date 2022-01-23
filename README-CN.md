@@ -98,7 +98,7 @@ USE mains.py  按照注释来即可.
 
 
 
-![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/TELE/docs/workflow.png)
+![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/main/docs/workflow.png)
 
 
 ```
