@@ -47,6 +47,7 @@ jobs:
         git config --global user.name sudoskys
         datime=$(date "+%Y年%m月%d日 %H:%M")
         echo "git commit: 上传于 $datime"
+       
         if [ -n "$(git status -s)" ];then
             # git pull
             git add .
