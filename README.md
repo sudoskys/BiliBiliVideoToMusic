@@ -72,8 +72,8 @@ To configure this action, you need to add secrets to the environment, one is git
 **Add Repository secrets**
 ````
 >token
->id
->rss
+>objectID
+>rssurl
 ````
 ````
 token = ***** # bot token, use tg@BotFather, google by yourself
