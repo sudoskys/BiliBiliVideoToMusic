@@ -58,6 +58,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
   
   audio: 
+    needs: deploy
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
     steps:
@@ -67,9 +68,7 @@ jobs:
         # Not strictly necessary, but it may prevent rate limit
         # errors especially on GitHub-hosted macos machines.
         token: ${{ secrets.GITHUB_TOKEN }}
-      id: setup-ffmpeg
-    
-
+      id: setup-ffmpeg 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
