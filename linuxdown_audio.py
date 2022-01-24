@@ -229,15 +229,15 @@ class dataPull:
 
     def dealAudio(self, name, road, url):
         import random,time
-        time.sleep(random.randint(1,5))
+        time.sleep(random.randint(7,9))
         m = road + "" + name + ".m4a"
         print(m + '---->>>' + url)
         print(useTool().dURL(url))
-        from fake_useragent import UserAgent
-        ua=UserAgent()
+        # from fake_useragent import UserAgent
+        # ua=UserAgent()
         fheader = {
             'Host': useTool().dURL(url),
-            'User-Agent':ua.chrome,
+            'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',#ua.chrome,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
             'Accept-Encoding': 'gzip, deflate, br',
