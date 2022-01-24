@@ -136,8 +136,7 @@ class mLog:
 class dataPull:
     def __init__(self):
         from fake_useragent import UserAgent
-        import random
-        fake_ua=UserAgent()
+        ua=UserAgent()
         self.header = {
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
@@ -146,7 +145,7 @@ class dataPull:
             'Connection': 'keep-alive',
             'Host': 'api.bilibili.com',
             'Upgrade - Insecure - Requests': '1',
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
+            'User-Agent': ua.chrome,
         }
         # 初始化类
         pass
@@ -234,9 +233,11 @@ class dataPull:
         m = road + "" + name + ".m4a"
         print(m + '---->>>' + url)
         print(useTool().dURL(url))
+        from fake_useragent import UserAgent
+        ua=UserAgent()
         fheader = {
             'Host': useTool().dURL(url),
-            'User-Agent':'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',# 
+            'User-Agent':ua.chrome,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
             'Accept-Encoding': 'gzip, deflate, br',
