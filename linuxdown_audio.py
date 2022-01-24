@@ -14,8 +14,7 @@ __version__ = '1月231958'
 /_____/_/\__,_/_/ /_/\__,_/
 """
 # 函数区
-import os
-import time
+import os,sys,time
 import shutil
 """
 !python -m pip install --upgrade pip
