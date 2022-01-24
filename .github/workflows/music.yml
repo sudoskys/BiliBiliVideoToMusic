@@ -81,7 +81,7 @@ jobs:
         # asyncio aiohttp
     - name: Run
       run: |
-        python linuxdown_audio.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }}
+        python linuxdown_audio.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.audiorssurl }}
         # CV了一下呃
 
     - name: commit
