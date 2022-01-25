@@ -217,6 +217,9 @@ class dataPull:
                 childdict = False
         # 存储dict
         # print(childdict)
+        
+        # 存入
+        self.succesdo(orginData)
         return childdict,newdict
 
     def succesdo(self, newdict):
@@ -340,7 +343,7 @@ def mian(**lmain):
                     print("START===" + n)
                     dealUrl(n, u ,push)
             
-            dataPull().succesdo(orginData)
+            # dataPull().succesdo(orginData)
             mLog("log", "  Renew Data  ").wq()
             print("========OK=========")
             useTool().remove(useTool().filesafer("work/music/"))
