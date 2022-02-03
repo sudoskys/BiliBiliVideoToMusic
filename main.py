@@ -13,9 +13,20 @@ __version__ = 'Jan201927'
  / /_/ / / /_/ / / / / /_/ / 
 /_____/_/\__,_/_/ /_/\__,_/                    
 """
-
+'''
+info:please check chains between each step
+class:
+   - caculate_rss  deal the rss
+   - url_car  download the file from url
+   - video_cat  
+   - file_tool
+'''
 
 # 数据提取的处理
+"""
+python -m pip install --upgrade pip
+pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser
+"""
 
 
 ## 函数区
