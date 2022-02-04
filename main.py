@@ -47,7 +47,7 @@ NOT ruamel IS ruamel.yaml！！
 '''
 
 
-## 工具类
+# 工具类
 class useTool:
     # github：sudoskys
     def __init__(self):
@@ -67,26 +67,26 @@ class useTool:
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
 
-    def filesafer(self, filename):
-        def wr(filename):
+    def filesafer(self, filenames):
+        def wr(filenames):
             import os
-            file_dir = os.path.split(filename)[0]
+            file_dir = os.path.split(filenames)[0]
             if not os.path.isdir(file_dir):
                 os.makedirs(file_dir)
-            if not os.path.exists(filename):
-                os.system(r'touch %s' % filename)
-            return filename
+            if not os.path.exists(filenames):
+                os.system(r'touch %s' % filenames)
+            return filenames
 
         try:
-            road = wr(filename)
+            road = wr(filenames)
             # droad = os.getcwd() + road
             self.dprint("New+ " + road)
             return road
         except:
             import os
-            print("重定向路径中" + str(os.getcwd() + '/' + filename))
+            print("重定向路径中" + str(os.getcwd() + '/' + filenames))
             try:
-                road = wr(os.getcwd() + '/' + filename)
+                road = wr(os.getcwd() + '/' + filenames)
                 return road
             except IOError as err:
                 print("err", err)
@@ -200,16 +200,14 @@ class dataPull:
                 pass
                 return False
 
-
-
     def rssdata(self):
         # succesdo(["begin"],["begin"])
         # RSS解析器
         newdict = useTool().rData("data/userdata.yaml")
         if newdict:
-           pass
+            pass
         else:
-           newdict = False
+            newdict = False
         return newdict
 
     def youGet(self, name, road, url, murl):
@@ -309,17 +307,17 @@ class dataPull:
                     r += tr[x[s[i]]] * 58 ** i
                 return (r - add) ^ xor
 
-            def cmurl(url):  # 分类处理（番剧与普通视频）
+            def cmurl(urls):  # 分类处理（番剧与普通视频）
                 # 合并函数--//--//--//
                 import re
                 try:
                     modle_video = r'BV\w{10}'
-                    match = re.findall(modle_video, url, re.I)
+                    match = re.findall(modle_video, urls, re.I)
                     new = match[0]
                     new_url = 'https://www.bilibili.com/video/av' + str(change(new))
                 except:
                     modle_video = r'ss\d{5}'
-                    match = re.findall(modle_video, url, re.I)
+                    match = re.findall(modle_video, urls, re.I)
                     new = match[0]
                     new_url = 'https://www.bilibili.com/bangumi/play/' + new
                 return new_url
@@ -355,49 +353,42 @@ def dealUrl(mtitle, murl):
     if mes:
         road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
         if road:
-            flacPath = useTool().pydubTrans(road, "flac")
+            useTool().pydubTrans(road, "flac")
         else:
             pass
     else:
         road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
         if road:
-            flacPath = useTool().pydubTrans(road, "flac")
+            useTool().pydubTrans(road, "flac")
         else:
             mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
             pass
 
 
-def mian(**lmain):
-        delete = lmain.get('delete')
-        time.sleep(2)
-        srssdata = dataPull().rssdata()
-        if not srssdata:
-            print("NO New Data")
-            mLog("log", "  NO New Data  ").wq()
+def mian(delete):
+    time.sleep(2)
+    srssdata = dataPull().rssdata()
+    if not srssdata:
+        print("NO New Data")
+        mLog("log", "  NO New Data  ").wq()
+        useTool().remove(useTool().filesafer("work/music/"))
+    else:
+        print(srssdata)
+        if isinstance(srssdata, dict):
+            for n, u in srssdata.items():
+                print("START===" + n)
+                dealUrl(n, u)
+        # dataPull().succesdo(orginData)
+        mLog("log", "  Renew Data  ").wq()
+        print("========OK=========")
+        if delete:
             useTool().remove(useTool().filesafer("work/music/"))
-        else:
-            print(srssdata)
-            if isinstance(srssdata,dict):
-                for n, u in srssdata.items():
-                    print("START===" + n)
-                    dealUrl(n, u)
-            else:
-                for n, u in srssdata:
-                    print("START===" + n)
-                    dealUrl(n, u)
-            # dataPull().succesdo(orginData)
-            mLog("log", "  Renew Data  ").wq()
-            print("========OK=========")
-            if delete:
-                useTool().remove(useTool().filesafer("work/music/"))
-                shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
+            shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
 
 
 # channal id ,please use @getidsbot get this value!
-import sys, os, shutil, time
+import os
+import shutil
+import time
 
-lme = {
-    'delete': False,
-}
-
-mian(**lme)
+mian(False)
