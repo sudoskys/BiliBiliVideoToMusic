@@ -40,8 +40,11 @@ class:
 # 数据提取的处理
 """
 python -m pip install --upgrade pip
-pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel
+pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml
 """
+'''
+NOT ruamel IS ruamel.yaml！！
+'''
 
 
 ## 工具类
@@ -94,13 +97,12 @@ class useTool:
         self.filesafer(file_name)
         if type(tables) == type({}) or type(tables) == type(["x"]):
             try:
-                import ruamel_yaml as YAML
-                # from ruamel.yaml import YAML
+                from ruamel.yaml import YAML
                 yaml = YAML()
                 with open(file_name, 'w') as f_obj:
                     yaml.dump(tables, f_obj)
             except IOError as err:
-                print("err", err)
+                mLog("err", err).wq()
                 raise Exception("NOT FOUND FILE 没有找到文件或读取文件失败", err)
             else:
                 return True
@@ -109,17 +111,17 @@ class useTool:
             return False
 
     def rData(self, file_names):
-        import os
         file_name = os.getcwd() + '/' + file_names
         self.filesafer(file_name)
+
         with open(file_name) as f_obj:
             try:
-                import ruamel_yaml as YAML
+                from ruamel.yaml import YAML
                 data = YAML(typ='safe').load(f_obj)
                 # print(data)
                 return data
             except Exception as err:
-                print("err", err)
+                mLog("err", err).wq()
                 return {}
 
     def pydubTrans(self, paths, Format):
@@ -173,25 +175,27 @@ class dataPull:
 
     def biliAudio(self, URLs):
         import json
-        # import re
         import requests
         url = "https://tenapi.cn/bilivideo/?url=" + URLs
-        response = requests.get(url, headers=self.header)
+        response = requests.get(url)
+        # print( response.status_code)
         if response.status_code == 200:
             content = response.text
             json_dict = json.loads(content)
             # print(json_dict)
-            if json_dict['code'] == 200:
+            if json_dict['code'] == "200":
                 if json_dict['url']:
                     try:
                         mUrl = json_dict['url']
-                        mName = json_dict.get('title')
+                        mName = json_dict['title']
                     except LookupError as err:
                         mLog("err", err).wq()
                         return False
                     else:
                         mes = {'dN': mName, 'dU': mUrl, }
                         return mes
+                else:
+                    mLog("err", "NO url").wq()
             else:
                 pass
                 return False
@@ -216,7 +220,7 @@ class dataPull:
         newdict = dict(zip(name_list, target_list))
         olddict = useTool().rData("data/rssdata.yaml")
         # 计算差值
-        if len(olddict) == 0:
+        if not olddict:
             childdict = newdict
         else:
             if not olddict == newdict:
@@ -227,22 +231,74 @@ class dataPull:
                 childdict = False
         # 存储dict
         # print(childdict)
-
         # 存入
         self.succesdo(newdict)
         return childdict, newdict
 
-    def dealFile(self, name, road, url):
+    def youGet(self, name, road, url, murl):
+        name = name.replace('/', '_')  # 消除目标对路径的干扰
         import random, time
         time.sleep(random.randint(7, 9))
         m = road + "" + name + ".flv"
-        mm = road + "" + name + ".flac"
-        print(m + '---->>>' + url)
-        print(useTool().dURL(url))
+        n = road + "" + name + ".mp4"
+        mm = road + "" + name + '.wav'
+        print('开始下载--' + m + '---->>>' + murl)
+        def change(x):  # BV号转AV号，from 知乎www.zhihu.com/question/381784377/answer/1099438784---WTFPL
+            tr = {}
+            table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
+            s = [11, 10, 3, 8, 4, 6]
+            xor = 177451812
+            add = 8728348608
+            r = 0
+            for i in range(58):
+                tr[table[i]] = i
+            for i in range(6):
+                r += tr[x[s[i]]] * 58 ** i
+            return (r - add) ^ xor
+        def cmurl(url):  # 分类处理（番剧与普通视频）
+            # 合并函数--//--//--//
+            import re
+            try:
+                modle_video = r'BV\w{10}'
+                match = re.findall(modle_video, url, re.I)
+                new = match[0]
+                new_url = 'https://www.bilibili.com/video/av' + str(change(new))
+            except:
+                modle_video = r'ss\d{5}'
+                match = re.findall(modle_video, url, re.I)
+                new = match[0]
+                new_url = 'https://www.bilibili.com/bangumi/play/' + new
+            return new_url
+        import sys, you_get
+        sys.argv = ['you-get', '-o',road, '-O', name, cmurl(murl)]  # '--playlist',
+        you_get.main()
+        from moviepy.editor import AudioFileClip
+        if os.path.exists(m):
+            my_audio_clip = AudioFileClip(m)
+            my_audio_clip.write_audiofile(mm)
+            print("//--------------//WAV OK//--------------//")
+            return mm
+        else:
+            if os.path.exists(n):
+                my_audio_clip = AudioFileClip(n)
+                my_audio_clip.write_audiofile(mm)
+                print("//--------------//WAV OK//--------------//")
+                return mm
+            else:
+                print("//--------------//NO flv exists//--------------//")
+                mLog("err", "Fail to download " + murl + '  -' + "-//NO flv exists//--------//").wq()
+        # mLog("err", "Fail to download " + url + '  -' + name + ' - ' + str(r.status_code)).wq()
+
+    def dealFile(self, name, road, url, murl):
+        import random, time
+        name = name.replace('/', '_')  # 消除目标对路径的干扰
+        time.sleep(random.randint(7, 9))
+        m = road  + "" + name + ".flv"
+        mm = road + "" + name + '.wav'
+        print('开始下载--' +m + '---->>>' + url)
         # from fake_useragent import UserAgent
         # ua=UserAgent()
         fheader = {
-            'Host': useTool().dURL(url),
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',  # ua.chrome,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
@@ -260,44 +316,82 @@ class dataPull:
         import requests
         r = requests.get(url, headers=fheader, stream=True, allow_redirects=True)
         if r.status_code == 403:
-            mLog("err", "Fail to download " + url + '  -' + name + ' - ' + str(r.status_code)).wq()
-            return False
+            def change(x):  # BV号转AV号，from 知乎www.zhihu.com/question/381784377/answer/1099438784---WTFPL
+                tr = {}
+                table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
+                s = [11, 10, 3, 8, 4, 6]
+                xor = 177451812
+                add = 8728348608
+                r = 0
+                for i in range(58):
+                    tr[table[i]] = i
+                for i in range(6):
+                    r += tr[x[s[i]]] * 58 ** i
+                return (r - add) ^ xor
+
+            def cmurl(url):  # 分类处理（番剧与普通视频）
+                # 合并函数--//--//--//
+                import re
+                try:
+                    modle_video = r'BV\w{10}'
+                    match = re.findall(modle_video, url, re.I)
+                    new = match[0]
+                    new_url = 'https://www.bilibili.com/video/av' + str(change(new))
+                except:
+                    modle_video = r'ss\d{5}'
+                    match = re.findall(modle_video, url, re.I)
+                    new = match[0]
+                    new_url = 'https://www.bilibili.com/bangumi/play/' + new
+                return new_url
+
+            import sys, you_get
+            sys.argv = ['you-get', '-o', road + "" + name, '-O', name, cmurl(murl)]  # '--playlist',
+            you_get.main()
+            # mLog("err", "Fail to download " + url + '  -' + name + ' - ' + str(r.status_code)).wq()
+            # return False
         else:
             print("Begin Down ----")
             with open(m, "wb") as music:
                 for chunk in r.iter_content(chunk_size=1024):  # 1024 bytes
                     if chunk:
                         music.write(chunk)
-
-                from moviepy.editor import AudioFileClip
-                if os.path.exists(m):
-                    my_audio_clip = AudioFileClip(m)
-                    my_audio_clip.write_audiofile(mm)
-                    print("//--------------//WAV OK//--------------//")
-                else:
-                    print("//--------------//NO flv exists//--------------//")
-                    mLog("err", "Fail to download " + url + '  -' + "-//NO flv exists//--------//").wq()
-                return m
+        from moviepy.editor import AudioFileClip
+        if os.path.exists(m):
+            my_audio_clip = AudioFileClip(m)
+            my_audio_clip.write_audiofile(mm)
+            print("//--------------//WAV OK//--------------//")
+            return mm
+        else:
+            print("//--------------//NO flv exists//--------------//")
+            mLog("err", "Fail to download " + url + '  -' + "-//NO flv exists//--------//").wq()
 
 
 # word on finding audio file url
 # return a list of file
 
+# 处理函数
 def dealUrl(mtitle, murl, objects):
     mes = dataPull().biliAudio(murl)
     if mes:
-        road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'))
+        road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化2.0 ", mtitle)
+            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化  R2", mtitle)
             os.remove(shut)
         else:
             pass
     else:
-        mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
-        pass
+        road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        if road:
+            flacPath = useTool().pydubTrans(road, "flac")
+            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化 R2", mtitle)
+            os.remove(shut)
+        else:
+            mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
+            pass
 
 
+# 机器人实例
 class robotPush:
     # robotPush(token,groupID).postAudio(fileroad,info,name):
     def __init__(self, token, ID):
@@ -317,7 +411,6 @@ class robotPush:
             return file
 
     def postAudio(self, file, source, name):
-
         if os.path.exists(file):
             audio = open(file, 'rb')
             self.BOT.send_audio(self.objectID, audio, source, name, name)
@@ -335,6 +428,7 @@ def mian(**lmain):
         mLog("err", "  参数不全  ").wq()
         raise Exception("参数不全!", lmain)
     else:
+        # 构建机器人实例
         push = robotPush(token, objectID)
         time.sleep(2)
         srssdata, orginData = dataPull().rssdata(rssurl)
@@ -364,7 +458,9 @@ def mian(**lmain):
 # channal id ,please use @getidsbot get this value!
 import sys, os, shutil, time
 
+
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
        "rssurl": sys.argv[3]}
+
 mian(**lme)
