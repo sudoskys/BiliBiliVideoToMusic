@@ -42,7 +42,7 @@ python -m pip install --upgrade pip
 pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser
 ```
 - FFmpeg环境 [ffmpeg](https://ffmpeg.org/download.html#get-packages)。
-（本仓库Action使用https://github.com/marketplace/actions/setup-ffmpeg）
+（本仓库Action使用 https://github.com/marketplace/actions/setup-ffmpeg ）
 * 本地使用运行`pip install bs4 requests tabulate mutagen pydub you_get moviepy` 来安装必要包
 * 推送服务安装机器人API库和RSS解析库 `pip install pyTelegramBotAPI feedparser`
 
