@@ -349,17 +349,16 @@ class dataPull:
 
 # 处理函数
 def dealUrl(mtitle, murl):
-    mes = dataPull().biliAudio(murl)
-    if mes:
+    if mtitle and murl:
         # road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
-        road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
 
         if road:
             useTool().pydubTrans(road, "flac")
         else:
             pass
     else:
-        road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             useTool().pydubTrans(road, "flac")
         else:
