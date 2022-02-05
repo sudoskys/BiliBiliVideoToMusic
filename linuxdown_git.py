@@ -376,7 +376,8 @@ class dataPull:
 def dealUrl(mtitle, murl, objects):
     mes = dataPull().biliAudio(murl)
     if mes:
-        road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        # road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
             shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化  R2", mtitle)
