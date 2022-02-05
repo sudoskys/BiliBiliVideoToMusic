@@ -237,6 +237,8 @@ class dataPull:
 
     def youGet(self, name, road, url, murl):
         name = name.replace('/', '_')  # 消除目标对路径的干扰
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')  # 消除目标对路径的干扰
         import random, time
         time.sleep(random.randint(7, 9))
         m = road + "" + name + ".flv"
@@ -295,6 +297,8 @@ class dataPull:
     def dealFile(self, name, road, url, murl):
         import random, time
         name = name.replace('/', '_')  # 消除目标对路径的干扰
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')  # 消除目标对路径的干扰
         time.sleep(random.randint(7, 9))
         m = road + "" + name + ".flv"
         mm = road + "" + name + '.wav'
