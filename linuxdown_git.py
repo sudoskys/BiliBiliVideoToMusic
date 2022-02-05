@@ -274,7 +274,8 @@ class dataPull:
                 new_url = 'https://www.bilibili.com/bangumi/play/' + new
             return new_url
 
-        import sys, you_get
+        import sys
+        import you_get
         sys.argv = ['you-get', '-o', road, '-O', name, cmurl(murl)]  # '--playlist',
         you_get.main()
         from moviepy.editor import AudioFileClip
@@ -295,7 +296,8 @@ class dataPull:
         # mLog("err", "Fail to download " + url + '  -' + name + ' - ' + str(r.status_code)).wq()
 
     def dealFile(self, name, road, url, murl):
-        import random, time
+        import random
+        import time
         name = name.replace('/', '_')  # 消除目标对路径的干扰
         name = name.replace('"', '_')  # 消除目标对路径的干扰
         name = name.replace("'", '_')  # 消除目标对路径的干扰
@@ -351,7 +353,8 @@ class dataPull:
                     new_url = 'https://www.bilibili.com/bangumi/play/' + new
                 return new_url
 
-            import sys, you_get
+            import sys
+            import you_get
             sys.argv = ['you-get', '-o', road + "" + name, '-O', name, cmurl(murl)]  # '--playlist',
             you_get.main()
             # mLog("err", "Fail to download " + url + '  -' + name + ' - ' + str(r.status_code)).wq()
@@ -390,7 +393,8 @@ def dealUrl(mtitle, murl, objects):
         else:
             pass
     else:
-        road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        # road = dataPull().youGet(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
+        road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
             shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化 R2", mtitle)
@@ -407,6 +411,9 @@ class robotPush:
         import telebot
         self.BOT = telebot.TeleBot(token)  # You can set parse_mode by default. HTML or MARKDOWN
         self.objectID = ID
+
+    def sendMessage(self, msg):
+        self.BOT.send_message(self.objectID, str(msg))
 
     def postVideo(self, file, source, name):
         import os
@@ -446,17 +453,25 @@ def mian(**lmain):
             mLog("log", "  NO New Data  ").wq()
             useTool().remove(useTool().filesafer("work/music/"))
             # shutil.rmtree(useTool().filesafer("work/music/"), ignore_errors=False, onerror=None)
-            shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
+            shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除
         else:
             print(srssdata)
-            if isinstance(srssdata,dict):
+            if isinstance(srssdata, dict):
                 for n, u in srssdata.items():
                     print("START===" + n)
-                    dealUrl(n, u, push)
+                    try:
+                        dealUrl(n, u, push)
+                    except BaseException as arg:
+                        push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
+
             else:
                 for n, u in srssdata:
                     print("START===" + n)
-                    dealUrl(n, u, push)
+                    try:
+                        dealUrl(n, u, push)
+                    except BaseException as arg:
+                        push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
+
             # dataPull().succesdo(orginData)
             mLog("log", "  Renew Data  ").wq()
             print("========OK=========")
@@ -469,7 +484,6 @@ import os
 import shutil
 import sys
 import time
-
 
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
