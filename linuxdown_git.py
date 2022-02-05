@@ -463,7 +463,7 @@ def mian(**lmain):
                         dealUrl(n, u, push)
                     except BaseException as arg:
                         push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
-
+                        # mLog("err", "Fail " + n + '  -' + u).wq()
             else:
                 for n, u in srssdata:
                     print("START===" + n)
@@ -471,7 +471,7 @@ def mian(**lmain):
                         dealUrl(n, u, push)
                     except BaseException as arg:
                         push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
-
+                        # mLog("err", "Fail " + n + '  -' + u).wq()
             # dataPull().succesdo(orginData)
             mLog("log", "  Renew Data  ").wq()
             print("========OK=========")
