@@ -33,7 +33,7 @@ jobs:
         # asyncio aiohttp
     - name: Run
       run: |
-        python linuxdown_git.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }} ${{ secrets.apptoken }} ${{ secrets.appid }} ${{ secrets.appkey }}
+        python linuxdown_git.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }} ${{ secrets.apptokens }} ${{ secrets.appids }} ${{ secrets.appkeys }}
         # 务必预先设置此值
 
     - name: commit
