@@ -40,7 +40,7 @@ class:
 # 数据提取的处理
 """
 python -m pip install --upgrade pip
-pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml O365
+pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml O365 urllib
 """
 '''
 NOT ruamel IS ruamel.yaml！！
@@ -383,7 +383,7 @@ class dataPull:
 def dealUrl(mtitle, murl, objects, _sync):
     import time
     import random
-
+    import urllib
     def random_sleep(mu=5, sigma=0.7):
         """正态分布随机睡眠
         :param mu: 平均值
@@ -404,11 +404,11 @@ def dealUrl(mtitle, murl, objects, _sync):
             flacPath = useTool().pydubTrans(road, "flac")
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #1.4 " +
                                      '\nSync- https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
-                                     os.path.basename(flacPath), mtitle)
+                                     urllib.quote(os.path.basename(flacPath)), mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             _token_ = _sync.upload(flacPath)
             os.remove(shut)
-            os.remove(_token_)
+            # os.remove(_token_)
         else:
             pass
     else:
@@ -500,6 +500,7 @@ def mian(**lmain):
             useTool().remove(useTool().filesafer("work/music/"))
             # shutil.rmtree(useTool().filesafer("work/music/"), ignore_errors=False, onerror=None)
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除
+            os.remove(useTool().filesafer("o365_token.txt"))
         else:
             print(srssdata)
             if isinstance(srssdata, dict):
@@ -523,6 +524,7 @@ def mian(**lmain):
             print("========OK=========")
             useTool().remove(useTool().filesafer("work/music/"))
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
+            os.remove(useTool().filesafer("o365_token.txt"))
 
 
 
