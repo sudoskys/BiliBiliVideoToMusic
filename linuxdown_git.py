@@ -40,7 +40,7 @@ class:
 # 数据提取的处理
 """
 python -m pip install --upgrade pip
-pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml O365 urllib
+pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml O365
 """
 '''
 NOT ruamel IS ruamel.yaml！！
@@ -383,7 +383,7 @@ class dataPull:
 def dealUrl(mtitle, murl, objects, _sync):
     import time
     import random
-    import urllib
+    from urllib.parse import quote
     def random_sleep(mu=5, sigma=0.7):
         """正态分布随机睡眠
         :param mu: 平均值
@@ -404,7 +404,7 @@ def dealUrl(mtitle, murl, objects, _sync):
             flacPath = useTool().pydubTrans(road, "flac")
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #1.4 " +
                                      '\nSync- https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
-                                     urllib.quote(os.path.basename(flacPath)), mtitle)
+                                     quote((os.path.basename(flacPath)), 'utf-8'), mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             _token_ = _sync.upload(flacPath)
             os.remove(shut)
