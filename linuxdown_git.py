@@ -432,7 +432,8 @@ class onedrive:
         self.keyid = keyid
         import json
         with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
-            f.write(json.dumps(self.token))
+            #f.write(json.dumps(self.token))
+            f.write(self.token)
 
     def upload(self, _path):
         from O365 import Account
