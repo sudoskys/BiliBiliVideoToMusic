@@ -208,10 +208,13 @@ class dataPull:
         # 过滤除中英文及数字以外的其他字符
         res = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]")
         return res.sub(restr, desstr)
+
     def well(self,name):
         import string
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')  # 消除目标对路径的干扰
         # remove = string.punctuation
-        table = str.maketrans(r'"~!#$'%^&,[]{}\/','________________',"")
+        table = str.maketrans(r'~!#$%^&,[]{}\/','________________',"")
         '''
         name = name.replace('/', '_')  # 消除目标对路径的干扰
         name = name.replace('"', '_')  # 消除目标对路径的干扰
@@ -221,6 +224,7 @@ class dataPull:
         name = name.replace("'", '_')  # 消除目标对路径的干扰
         '''
         return name.translate(table)
+
     def rssdata(self, url):
         # succesdo(["begin"],["begin"])
         # RSS解析器
