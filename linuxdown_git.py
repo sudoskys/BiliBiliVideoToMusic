@@ -402,9 +402,11 @@ def dealUrl(mtitle, murl, objects, _sync):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #1.4 " +
+            shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
                                      '\nSync- https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
-                                     quote((os.path.basename(flacPath)), 'utf-8'), mtitle)
+                                     '<a href="' + 
+                                      quote((os.path.basename(flacPath)), 'utf-8') +
+                                     '">Sync link</a>', mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             _token_ = _sync.upload(flacPath)
             os.remove(shut)
@@ -451,7 +453,7 @@ class robotPush:
     # robotPush(token,groupID).postAudio(fileroad,info,name):
     def __init__(self, token, ID):
         import telebot
-        self.BOT = telebot.TeleBot(token)  # You can set parse_mode by default. HTML or MARKDOWN
+        self.BOT = telebot.TeleBot(token, parse_mode="HTML")  # You can set parse_mode by default. HTML or MARKDOWN
         self.objectID = ID
 
     def sendMessage(self, msg):
