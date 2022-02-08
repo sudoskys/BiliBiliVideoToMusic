@@ -381,7 +381,20 @@ class dataPull:
 
 # 处理函数
 def dealUrl(mtitle, murl, objects):
+    import time
+    import random
+
+    def random_sleep(mu=5, sigma=0.7):
+        """正态分布随机睡眠
+        :param mu: 平均值
+        :param sigma: 标准差，决定波动范围
+        """
+        secs = random.normalvariate(mu, sigma)
+        if secs <= 0:
+            secs = mu  # 太小则重置为平均值
+        time.sleep(secs)
     # mes = dataPull().biliAudio(murl)
+    random_sleep()
     mes = True
     if mes:
         # road = dataPull().dealFile(mes.get('dN'), useTool().filesafer("work/music/"), mes.get('dU'), murl)
