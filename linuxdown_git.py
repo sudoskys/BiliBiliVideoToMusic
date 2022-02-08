@@ -236,7 +236,7 @@ class dataPull:
         for m in fp.entries:
             # print('T:',m.title)
             # print('U:',m.links[0].href)
-            name_list.append(self.well(m.title))
+            name_list.append(m.title)
             target_list.append(m.links[0].href)
         newdict = dict(zip(name_list, target_list))
         olddict = useTool().rData("data/rssdata.yaml")
@@ -526,6 +526,7 @@ def mian(**lmain):
             print(srssdata)
             if isinstance(srssdata, dict):
                 for n, u in srssdata.items():
+                    n = dataPull().well(n)
                     print("START===" + n)
                     try:
                         dealUrl(n, u, push, sync)
@@ -534,6 +535,7 @@ def mian(**lmain):
                         # mLog("err", "Fail " + n + '  -' + u).wq()
             else:
                 for n, u in srssdata:
+                    n = dataPull().well(n)
                     print("START===" + n)
                     try:
                         dealUrl(n, u, push, sync)
