@@ -211,7 +211,7 @@ class dataPull:
     def well(self,name):
         import string
         # remove = string.punctuation
-        table = str.maketrans('"~!#$'%^&,[]{}\/','________________',"")
+        table = str.maketrans(r'"~!#$'%^&,[]{}\/','________________',"")
         '''
         name = name.replace('/', '_')  # 消除目标对路径的干扰
         name = name.replace('"', '_')  # 消除目标对路径的干扰
