@@ -380,7 +380,7 @@ class dataPull:
 # return a list of file
 
 # 处理函数
-def dealUrl(mtitle, murl, objects):
+def dealUrl(mtitle, murl, objects, _sync):
     import time
     import random
 
@@ -393,6 +393,7 @@ def dealUrl(mtitle, murl, objects):
         if secs <= 0:
             secs = mu  # 太小则重置为平均值
         time.sleep(secs)
+
     # mes = dataPull().biliAudio(murl)
     random_sleep()
     mes = True
@@ -404,7 +405,8 @@ def dealUrl(mtitle, murl, objects):
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #1.4 " +
                                      '\nSync- https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
                                      os.path.basename(flacPath), mtitle)
-            _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
+            # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
+            _token_ = _sync.upload(flacPath)
             os.remove(shut)
             os.remove(_token_)
         else:
@@ -419,6 +421,27 @@ def dealUrl(mtitle, murl, objects):
         else:
             mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
             pass
+
+
+class onedrive:
+    # robotPush(token,groupID).postAudio(fileroad,info,name):
+    def __init__(self, token, zuhuid, keyid):
+        self.token = token
+        self.zuhuid = zuhuid
+        self.keyid = keyid
+        import json
+        with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
+            f.write(json.dumps(self.token))
+
+    def upload(self, _path):
+        from O365 import Account
+        credentials = (self.zuhuid, self.keyid)
+        account = Account(credentials=credentials)  # credentials=credentials)
+        storage = account.storage()
+        my_drive = storage.get_default_drive()
+        pro = my_drive.get_item_by_path('/share/Music')
+        pro.upload_file(item=_path)
+        return useTool().filesafer("o365_token.txt")
 
 
 # 机器人实例
@@ -457,12 +480,16 @@ def mian(**lmain):
     token = lmain.get('token')
     objectID = lmain.get('objectID')
     rssurl = lmain.get('rssurl')
-    if not all([token, objectID, rssurl]):
+    apptoken = lmain.get('apptoken')
+    appid = lmain.get('appid')
+    appkey = lmain.get('appkey')
+    if not all([token, objectID, rssurl, apptoken, appid, appkey]):
         mLog("err", "  参数不全  ").wq()
         raise Exception("参数不全!", lmain)
     else:
         # 构建机器人实例
         push = robotPush(token, objectID)
+        sync = onedrive(apptoken, appid, appkey)
         time.sleep(2)
         srssdata, orginData = dataPull().rssdata(rssurl)
         if not srssdata:
@@ -477,7 +504,7 @@ def mian(**lmain):
                 for n, u in srssdata.items():
                     print("START===" + n)
                     try:
-                        dealUrl(n, u, push)
+                        dealUrl(n, u, push, sync)
                     except BaseException as arg:
                         push.sendMessage('Failed post ' + n + '\n Url:' + u + '\n Exception:' + str(arg))
                         # mLog("err", "Fail " + n + '  -' + u).wq()
@@ -485,7 +512,7 @@ def mian(**lmain):
                 for n, u in srssdata:
                     print("START===" + n)
                     try:
-                        dealUrl(n, u, push)
+                        dealUrl(n, u, push, sync)
                     except BaseException as arg:
                         push.sendMessage('Failed post ' + n + '\n Url:' + u + '\n Exception:' + str(arg))
                         # mLog("err", "Fail " + n + '  -' + u).wq()
@@ -496,23 +523,7 @@ def mian(**lmain):
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
 
 
-class onedrive:
-    # robotPush(token,groupID).postAudio(fileroad,info,name):
-    def __init__(self, token):
-        self.token = token
-        import json
-        with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
-            f.write(json.dumps(self.token))
 
-    def upload(self, _path, zuhuid, keyid):
-        from O365 import Account
-        credentials = (zuhuid, keyid)
-        account = Account(credentials=credentials)  # credentials=credentials)
-        storage = account.storage()
-        my_drive = storage.get_default_drive()
-        pro = my_drive.get_item_by_path('/share/Music')
-        pro.upload_file(item=_path)
-        return useTool().filesafer("o365_token.txt")
 
 
 # channal id ,please use @getidsbot get this value!
@@ -523,6 +534,10 @@ import time
 
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
-       "rssurl": sys.argv[3]}
+       "rssurl": sys.argv[3],
+       "apptoken": sys.argv[4],
+       "appid": sys.argv[5],
+       "appkey": sys.argv[6],
+       }
 
 mian(**lme)
