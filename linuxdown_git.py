@@ -203,7 +203,24 @@ class dataPull:
     def succesdo(self, newdict):
         # 记录此次数据
         useTool().sData("data/rssdata.yaml", newdict)
-
+    
+    def cleandata(self, desstr, restr='|'):
+        # 过滤除中英文及数字以外的其他字符
+        res = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]")
+        return res.sub(restr, desstr)
+    def well(self,name):
+        import string
+        # remove = string.punctuation
+        table = str.maketrans('"~!#$'%^&,[]{}\/','________________',"")
+        '''
+        name = name.replace('/', '_')  # 消除目标对路径的干扰
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')  # 消除目标对路径的干扰
+        name = name.replace('/', '_')  # 消除目标对路径的干扰
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')  # 消除目标对路径的干扰
+        '''
+        return name.translate(table)
     def rssdata(self, url):
         # succesdo(["begin"],["begin"])
         # RSS解析器
@@ -215,7 +232,7 @@ class dataPull:
         for m in fp.entries:
             # print('T:',m.title)
             # print('U:',m.links[0].href)
-            name_list.append(m.title)
+            name_list.append(self.well(m.title))
             target_list.append(m.links[0].href)
         newdict = dict(zip(name_list, target_list))
         olddict = useTool().rData("data/rssdata.yaml")
