@@ -1,0 +1,11 @@
+bs4
+requests
+tabulate
+mutagen
+pydub
+you_get
+moviepy
+pyTelegramBotAPI
+feedparser
+ruamel.yaml
+O365

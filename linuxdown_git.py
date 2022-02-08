@@ -40,7 +40,7 @@ class:
 # 数据提取的处理
 """
 python -m pip install --upgrade pip
-pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml
+pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get moviepy pyTelegramBotAPI feedparser ruamel.yaml O365
 """
 '''
 NOT ruamel IS ruamel.yaml！！
@@ -388,8 +388,12 @@ def dealUrl(mtitle, murl, objects):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化  R2", mtitle)
+            shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #1.4 " +
+                                     '\nSync- https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
+                                     os.path.basename(flacPath), mtitle)
+            _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             os.remove(shut)
+            os.remove(_token_)
         else:
             pass
     else:
@@ -397,7 +401,7 @@ def dealUrl(mtitle, murl, objects):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化 R2", mtitle)
+            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化 R1", mtitle)
             os.remove(shut)
         else:
             mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
@@ -462,7 +466,7 @@ def mian(**lmain):
                     try:
                         dealUrl(n, u, push)
                     except BaseException as arg:
-                        push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
+                        push.sendMessage('Failed post ' + n + '\n Url:' + u + '\n Exception:' + str(arg))
                         # mLog("err", "Fail " + n + '  -' + u).wq()
             else:
                 for n, u in srssdata:
@@ -470,13 +474,32 @@ def mian(**lmain):
                     try:
                         dealUrl(n, u, push)
                     except BaseException as arg:
-                        push.sendMessage('Failed post ' + n + '\n --url' + u + '\n Exception:' + str(arg))
+                        push.sendMessage('Failed post ' + n + '\n Url:' + u + '\n Exception:' + str(arg))
                         # mLog("err", "Fail " + n + '  -' + u).wq()
             # dataPull().succesdo(orginData)
             mLog("log", "  Renew Data  ").wq()
             print("========OK=========")
             useTool().remove(useTool().filesafer("work/music/"))
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
+
+
+class onedrive:
+    # robotPush(token,groupID).postAudio(fileroad,info,name):
+    def __init__(self, token):
+        self.token = token
+        import json
+        with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
+            f.write(json.dumps(self.token))
+
+    def upload(self, _path, zuhuid, keyid):
+        from O365 import Account
+        credentials = (zuhuid, keyid)
+        account = Account(credentials=credentials)  # credentials=credentials)
+        storage = account.storage()
+        my_drive = storage.get_default_drive()
+        pro = my_drive.get_item_by_path('/share/Music')
+        pro.upload_file(item=_path)
+        return useTool().filesafer("o365_token.txt")
 
 
 # channal id ,please use @getidsbot get this value!
