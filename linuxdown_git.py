@@ -426,7 +426,8 @@ def dealUrl(mtitle, murl, objects, _sync):
 class onedrive:
     # robotPush(token,groupID).postAudio(fileroad,info,name):
     def __init__(self, token, zuhuid, keyid):
-        self.token = token
+        import base64
+        self.token = base64.b64decode(token).decode('utf-8')
         self.zuhuid = zuhuid
         self.keyid = keyid
         import json
@@ -541,3 +542,8 @@ lme = {'token': sys.argv[1],
        }
 
 mian(**lme)
+
+'''
+import base64
+print(base64.b64decode("YWJjcjM0cjM0NHI=").decode('utf-8'))
+'''
