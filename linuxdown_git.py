@@ -424,7 +424,7 @@ def dealUrl(mtitle, murl, objects, _sync):
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
             syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/Music/' +
-                               quote((os.path.basename(flacPath)), 'utf-8')
+                               (quote(os.path.basename(flacPath)), 'utf-8')
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
                                      '\nSync '+ '<a href="' + syncurl + '">Sync link</a>'  , mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
