@@ -214,7 +214,7 @@ class dataPull:
         name = name.replace('"', '_')  # 消除目标对路径的干扰
         name = name.replace("'", '_')  # 消除目标对路径的干扰
         # remove = string.punctuation
-        table = str.maketrans(r'~!#$%^&,[]{}\/','________________',"")
+        table = str.maketrans(r'~!#$%^&,[]{}\/','______________',"")
         '''
         name = name.replace('/', '_')  # 消除目标对路径的干扰
         name = name.replace('"', '_')  # 消除目标对路径的干扰
