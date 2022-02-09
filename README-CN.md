@@ -2,21 +2,16 @@
 ![counter](https://count.getloli.com/get/@sudoskys-github-BiliBiliVideoToMusic?theme=moebooru)
 
 [![MIT License](https://img.shields.io/badge/LICENSE-MIT-ff69b4)](http://choosealicense.com/licenses/mit/)   ![u](https://img.shields.io/badge/USE-python-green)   [![s](https://img.shields.io/badge/Sponsor-Alipay-ff69b4)](https://azz.net/ly233)
-![v](https://img.shields.io/badge/Version-1.0.2-9cf)  
+![v](https://img.shields.io/badge/Version-220209-9cf)  
 
 ### [English](README.md)  | [中文](README-CN.md) 
 
 ## 介绍
 
 哔哩哔哩视频下载提取音频为wav与flac   TG-RSS版本视频二传提取推送。
-此项目可以让你同步收藏夹二创视频的音乐到指定TG群组，使用RSShub提供数据支持。
+此项目可以让你同步收藏夹二创视频的音乐到指定TG群组并且还有onedrive bussines，使用RSShub提供数据支持。
 
 
-## TODO
-- [x] 实现下载功能
-- [x] 实现取新条目功能
-- [x] 实现推送功能
-- [ ] 实现多源多目标推送
 
 ## 特性
 🛠 MAIN可以在windows系统上运行，支持贴音乐标签与可选保存flv和wav文件。（自己改动文件.....）
@@ -53,6 +48,8 @@ pip install setuptools wheel twine bs4 requests tabulate mutagen pydub you_get m
 linuxdown_git.py --->RSS auto editon
 mains.py --->win&linux editon
 ```
+⚠ 自220209版本后加入了ONEdrive同步功能，如果Rss部署不需要此功能，请注释lmain的参数与其中有关onedrive的类.
+
 
 #### RSS推送用户
 * 源(linuxdown_git.py)
@@ -67,11 +64,18 @@ Tips: 如果您使用action部署，建议只设置提取flac。
 >token
 >objectID
 >rssurl
+>apptoken
+>appid
+>appkey
 ```
 ```
 token = ***** # bot token，use tg@BotFather，自行google
 objectID = ***** # channal id ,please use tg@getidsbot get this value!
 rssurl = ****  # rssurl，详见 https://docs.rsshub.app/
+
+----
+appid，appkey，apptoken 是 微软云盘同步使用，这些量需要您去azure获取，而token请通过运行test/tokensetup自动生成！
+不需要此功能请注释掉！
 ```
 
 **Add Environment secrets**
@@ -80,13 +84,15 @@ rssurl = ****  # rssurl，详见 https://docs.rsshub.app/
 >email # your email address
 ```
 
-⚠注意区分两个token.
+⚠ 注意区分两个token.
 
 * 运行
 Github action每天6:20运行一次流程，仓库主人加星也会触发流程.
 
 #### 独立使用
-USE mains.py  按照注释来即可.
+USE mains.py  
+
+填写 data/userdata.yaml，运行即可.
 
 
 ## 实现逻辑(linuxdown_git.py)
@@ -94,8 +100,7 @@ USE mains.py  按照注释来即可.
 >具体代码详见 linuxdown_git.py （windows环境下使用main.py）
 拉取RSS-->比对数据+录入数据-->计算出更新后的数据-->传入下载提取函数-->发送文件-->删除文件树
 
-
-
+RSSdata是独立的存储工作员，与主程序之间以rssdata.yaml关联
 
 
 ![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/main/docs/workflow.png)
@@ -121,26 +126,55 @@ E[TG] --> S[写入报告]
 
 ### 目录结构描述
 ```
-├── Readme.md                   // help
-├── history_name.txt                         // 历史链接对应的标题
-├── history_target.txt                       // 历史链接
-├── log.txt                   // log
-├── linuxdown_git.py  //  rss推送版本， github action 运行目标
-└── mains.py   // linux&win都可以用的交互式下载版本
+.
+├── data
+│  ├── public.cer    //公钥
+│  ├── rssdata.yaml   //自动化填入的
+│  └── userdata.yaml   //手动填入的
+├── docs   //文档
+│  └── workflow.png
+├── err.txt   //本地调试报错日志
+├── LICENSE   //协议
+├── LICENSE.txt
+├── linuxdown_audio.py   //  rss测试版本， 歌单下载，因为api受限
+├── linuxdown_git.py    //  rss推送版本， github action 运行目标
+├── log.txt
+├── main.py  // linux&win都可以用的交互式下载版本
+├── mods
+│  
+│  │ 
+│  └── rsatool.py  //rsa支持
+├── o365_token.txt   //加密后的token ，运行时解密
+├── README-CN.md
+├── README.md
+├── requirements.txt
+├── targets.txt
+└── test
+    ├── err.txt
+    ├── log.txt
+    ├── tokensetup.py  //token 设置自动生成
+    └── t_video.py
+
 ```
 
+## TODO
+- [x] 实现下载功能
+- [x] 实现取新条目功能
+- [x] 实现推送功能
+- [ ] 实现多源多目标推送
+
+
 ## 贡献
-🚧 此项目的OneDrive分支卡死在[onedrive上传同步功能]-->[onedrive_上传实现]-->[上传失败无授权token is empty]
+🚧 详见TODO
+
+## 鸣谢
+
+- [BV号转AV号](https://www.zhihu.com/question/381784377/answer/1099438784)|Youget修复算法实现|
+- [O365](https://github.com/O365/python-o365) |微软云盘同步实现|
+- [RSShub](https://docs.rsshub.app/) |数据源RSS|
 
 
-## 引用
-
-| URL | 作者 |
-| --- | ----------- | 
-| [BV号转AV号](https://www.zhihu.com/question/381784377/answer/1099438784) | mcfx |
-
-
-## 支持我
+## 支持
 THIS link: https://azz.net/ly233
 [![](https://static01.imgkr.com/temp/5808cb7e9e6340409bd07afc0e5ca723.png)](https://azz.net/ly233)
 
