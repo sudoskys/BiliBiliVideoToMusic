@@ -444,7 +444,7 @@ class onedrive:
             pub = f.read()
         alice_call = {
             'pub': pub,
-            'pri': pri,
+            'pri': str(base64.b64decode(pri), "utf-8"),
         }
         self.zras = rastool.RsaUtil(mode="STR", **alice_call)
         self.zuhuid = zuhuid
@@ -569,6 +569,7 @@ import shutil
 import sys
 import time
 
+
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
        "rssurl": sys.argv[3],
@@ -578,6 +579,8 @@ lme = {'token': sys.argv[1],
        }
 
 mian(**lme)
+
+
 
 
 
