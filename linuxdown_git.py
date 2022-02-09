@@ -393,6 +393,7 @@ def dealUrl(mtitle, murl, objects, _sync):
     import time
     import random
     from urllib.parse import quote
+    from mods.flacTool import flacInfo
     def random_sleep(mu=5, sigma=0.7):
         """正态分布随机睡眠
         :param mu: 平均值
@@ -411,6 +412,12 @@ def dealUrl(mtitle, murl, objects, _sync):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
+            AU = flacInfo(murl)
+            if AU:
+                if AU.setFlac(flacPath):
+                    pass
+            else:
+                pass
             syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/Music/' + quote(os.path.basename(flacPath),
                                                                                            'utf-8')
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
@@ -564,11 +571,11 @@ def mian(**lmain):
 
 
 # channal id ,please use @getidsbot get this value!
+
 import os
 import shutil
 import sys
 import time
-
 
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
