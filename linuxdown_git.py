@@ -442,7 +442,6 @@ class onedrive:
         import mods.rsatool as rastool
         with open(useTool().filesafer('data/public.cer'), 'r', encoding='utf-8') as f:
             pub = f.read()
-
         alice_call = {
             'pub': pub,
             'pri': pri,
@@ -453,7 +452,7 @@ class onedrive:
         # import json
         with open(useTool().filesafer('o365_token.txt'), 'r', encoding='utf-8') as f:
             token = f.read()
-        tokens = self.zras.decrypt_by_private_key(str(token).decode('utf-8'))
+        tokens = self.zras.decrypt_by_private_key(str(token))
         tokens = str(base64.b64decode(tokens), "utf-8")
         with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
             # f.write(json.dumps(self.token))
@@ -579,6 +578,9 @@ lme = {'token': sys.argv[1],
        }
 
 mian(**lme)
+
+
+
 
 '''
 import base64
