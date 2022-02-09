@@ -13,21 +13,7 @@ __version__ = '2月032205'
  / /_/ / / /_/ / / / / /_/ /
 /_____/_/\__,_/_/ /_/\__,_/
 """
-# _*_ coding: utf-8 _*_
-"""
-__project__ = 'bili'
-__file_name__ = 'main'
-__author__ = 'sudoskys'
-__time__ = '1/20/22 7:27 PM'
-__product_name__ = 'PyCharm'
-__version__ = 'Jan201927'
-# code is far away from bugs with the god，author here https://github.com/sudoskys
-    ____  _                  
-   / __ \(_)___ _____  ____ _
-  / / / / / __ `/ __ \/ __ `/
- / /_/ / / /_/ / / / / /_/ / 
-/_____/_/\__,_/_/ /_/\__,_/                    
-"""
+
 '''
 info:please check chains between each step
 class:
@@ -203,18 +189,20 @@ class dataPull:
     def succesdo(self, newdict):
         # 记录此次数据
         useTool().sData("data/rssdata.yaml", newdict)
-    
+
     def cleandata(self, desstr, restr='|'):
         # 过滤除中英文及数字以外的其他字符
-        res = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]")
-        return res.sub(restr, desstr)
+        # import re
+        # res = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]")
+        # return res.sub(restr, desstr)
+        pass
 
-    def well(self,name):
-        import string
+    def well(self, name):
+        # import string
         name = name.replace('"', '_')  # 消除目标对路径的干扰
         name = name.replace("'", '_')  # 消除目标对路径的干扰
         # remove = string.punctuation
-        table = str.maketrans(r'~!#$%^&,[]{}\/','______________',"")
+        table = str.maketrans(r'~!#$%^&,[]{}\/？?', '________________', "")
         '''
         name = name.replace('/', '_')  # 消除目标对路径的干扰
         name = name.replace('"', '_')  # 消除目标对路径的干扰
@@ -423,9 +411,10 @@ def dealUrl(mtitle, murl, objects, _sync):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/Music/' + quote(os.path.basename(flacPath), 'utf-8')
+            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/Music/' + quote(os.path.basename(flacPath),
+                                                                                           'utf-8')
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
-                                     '\nSync '+ '<a href="' + syncurl + '">Sync link</a>'  , mtitle)
+                                     '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             _token_ = _sync.upload(flacPath)
             os.remove(shut)
@@ -444,17 +433,31 @@ def dealUrl(mtitle, murl, objects, _sync):
             pass
 
 
+
+
 class onedrive:
     # robotPush(token,groupID).postAudio(fileroad,info,name):
-    def __init__(self, token, zuhuid, keyid):
+    def __init__(self, pri, zuhuid, keyid):
         import base64
-        self.token = base64.b64decode(token).decode('utf-8')
+        import mods.rsatool as rastool
+        with open(useTool().filesafer('data/public.cer'), 'r', encoding='utf-8') as f:
+            pub = f.read()
+
+        alice_call = {
+            'pub': pub,
+            'pri': pri,
+        }
+        self.zras = rastool.RsaUtil(mode="STR", **alice_call)
         self.zuhuid = zuhuid
         self.keyid = keyid
-        import json
+        # import json
+        with open(useTool().filesafer('o365_token.txt'), 'r', encoding='utf-8') as f:
+            token = f.read()
+        tokens = self.zras.decrypt_by_private_key(str(token).decode('utf-8'))
+        tokens = str(base64.b64decode(tokens), "utf-8")
         with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
-            #f.write(json.dumps(self.token))
-            f.write(self.token)
+            # f.write(json.dumps(self.token))
+            f.write(tokens)
 
     def upload(self, _path):
         from O365 import Account
@@ -465,6 +468,15 @@ class onedrive:
         pro = my_drive.get_item_by_path('/share/Music')
         pro.upload_file(item=_path)
         return useTool().filesafer("o365_token.txt")
+
+    def lock_token(self):
+        import base64
+        with open(useTool().filesafer("o365_token.txt"), 'r', encoding='utf-8') as f:
+            tokens = f.read()
+        tokens = str(base64.b64encode(tokens.encode("utf-8")), "utf-8")
+        con = self.zras.encrypt_by_public_key(tokens).decode('utf-8')
+        with open(useTool().filesafer("o365_token.txt"), 'w+') as f:
+            f.write(con)
 
 
 # 机器人实例
@@ -517,11 +529,12 @@ def mian(**lmain):
         srssdata, orginData = dataPull().rssdata(rssurl)
         if not srssdata:
             print("NO New Data")
+            sync.lock_token()
             mLog("log", "  NO New Data  ").wq()
             useTool().remove(useTool().filesafer("work/music/"))
             # shutil.rmtree(useTool().filesafer("work/music/"), ignore_errors=False, onerror=None)
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除
-            os.remove(useTool().filesafer("o365_token.txt"))
+            # os.remove(useTool().filesafer("o365_token.txt"))
         else:
             print(srssdata)
             if isinstance(srssdata, dict):
@@ -545,12 +558,10 @@ def mian(**lmain):
             # dataPull().succesdo(orginData)
             mLog("log", "  Renew Data  ").wq()
             print("========OK=========")
+            sync.lock_token()
             useTool().remove(useTool().filesafer("work/music/"))
             shutil.rmtree(os.getcwd() + '/work/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
-            os.remove(useTool().filesafer("o365_token.txt"))
-
-
-
+            # os.remove(useTool().filesafer("o365_token.txt"))
 
 
 # channal id ,please use @getidsbot get this value!

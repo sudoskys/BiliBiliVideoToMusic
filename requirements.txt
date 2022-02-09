@@ -9,3 +9,4 @@ pyTelegramBotAPI
 feedparser
 ruamel.yaml
 O365
+rsa~=4.8
