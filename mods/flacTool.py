@@ -31,6 +31,31 @@ class flacInfo:
             'Cookie':'1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB',
         }
         self.getInfo(urls)
+    def filesafer(self, filen):
+        def wr(filen):
+            import os
+            file_dir = os.path.split(filen)[0]
+            if not os.path.isdir(file_dir):
+                os.makedirs(file_dir)
+            if not os.path.exists(filen):
+                os.system(r'touch %s' % filen)
+            return filen
+
+        try:
+            road = wr(filen)
+            # droad = os.getcwd() + road
+            self.dprint("New+ " + road)
+            return road
+        except:
+            import os
+            print("重定向路径中" + str(os.getcwd() + '/' + filen))
+            try:
+                road = wr(os.getcwd() + '/' + filen)
+                return road
+            except IOError as err:
+                print("err", err)
+                print("Error:NOT FOUND FILE 没有找到文件或读取文件失败")
+                return False
 
     def pict_test(self, audios):
              from mutagen.flac import File
@@ -44,12 +69,19 @@ class flacInfo:
              if 'covr' in audios or 'APIC:' in audios:
                  return True
              return False
+    def cleandata(self, desstr, restr='_'):
+        # 过滤除中英文及数字以外的其他字符
+        import re
+        res = re.compile("[^\u4e00-\u9fa5^a-z^A-Z^0-9]")
+        return res.sub(restr, desstr)
+        #pass
 
     def get_image(self,urls):
         import requests,re
         myfile = requests.get(urls)
         suf = re.search(u'(?P<suf>.\w*$)',urls).groupdict().get("suf")
-        name = self.Name + suf
+        opname = self.cleandata(self.Name)
+        name = opname + suf
         open(name, 'wb').write(myfile.content)
         if myfile.status_code == 200:
            return name
@@ -68,8 +100,8 @@ class flacInfo:
              albumart = path
              self.netpic = True
           else:
-             print(99)
-             albumart = useTool().filesafer("data/defalut_cover.png")
+             print("use defalut png............")
+             albumart = self.filesafer("data/defalut_cover.png")
              self.netpic = False
 
           # if  os.path.splitext(albumart)[-1][1:]==('png'):
@@ -82,8 +114,9 @@ class flacInfo:
               image.data = f.read()
           audio.add_picture(image)
           audio.save()
+          #return albumart
           if self.netpic:
-            os.remove(useTool().filesafer(albumart))
+             os.remove(self.filesafer(albumart))
 
 
     def setFlac(self,file_dir):
@@ -125,10 +158,12 @@ class flacInfo:
         except BaseException:
             return False
         try:
-            self.set_image(file_dir,self.audioPic)
+            path = self.set_image(file_dir,self.audioPic)
         except BaseException as e:
             print(e)
             return False
+        else:
+            return path
 
     def getInfo(self, murl):
         import json
