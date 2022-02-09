@@ -116,7 +116,7 @@ class flacInfo:
         # audio["CATALOGNUM"] = self.catno
         audio["GENRE"] = self.userTname
         audio["YEAR"] = self.creatYear
-        audio["DESCRIPTION"] = '::> Don\'t believe the hype! <::'
+        # audio["DESCRIPTION"] = '::> Don\'t believe the hype! <::'
         if(len(encoding) != 0):
             audio["ENCODING"] = encoding
         audio.pprint()
