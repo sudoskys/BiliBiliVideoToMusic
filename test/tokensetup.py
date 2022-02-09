@@ -202,7 +202,9 @@ def gogo(accounts):
     shutil.move(os.getcwd() + "/o365_token.txt", tar + "/o365_token.txt")
     shutil.move(os.getcwd() + "/public.cer", tar + "/data/public.cer")
     os.remove(os.getcwd() + "/private.key")
-    print('收好你的私钥：\n\n' + private.decode('utf-8'))
+    key = private.decode('utf-8')
+    str(base64.b64encode(key.encode("utf-8")), "utf-8")
+    print('收好你的私钥：\n\n' + key)
 
 
 import os
