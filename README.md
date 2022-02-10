@@ -52,7 +52,7 @@ mains.py --->win&linux edition
 
 
 #### RSS feed users
-* source (linuxdown_git.py)
+* source (gitPush.py)
 You need to build [Rsshub](https://docs.rsshub.app/) to get web sources, or use the services of public projects! See .
 
 * Fork this repository and set secrets
@@ -95,9 +95,9 @@ USE mains.py
 Fill in data/userdata.yaml and run it.
 
 
-## Implementation logic (linuxdown_git.py)
+## Implementation logic (gitPush.py)
 
-> For the specific code, see linuxdown_git.py (main.py is used in the windows environment)
+> For the specific code, see gitPush.py (main.py is used in the windows environment)
 Pull RSS-->Compare data + input data-->Calculate the updated data-->Incoming download extraction function-->Send file-->Delete file tree
 
 RSSdata is an independent storage worker, associated with the main program by rssdata.yaml
@@ -137,7 +137,7 @@ E[TG] --> S[write report]
 ├── LICENSE //Protocol
 ├── LICENSE.txt
 ├── linuxdown_audio.py // rss test version, playlist download, because the api is limited
-├── linuxdown_git.py // rss push version, github action run target
+├── gitPush.py // rss push version, github action run target
 ├── log.txt
 ├── main.py // Interactive download version available for both linux & win
 ├── mods
