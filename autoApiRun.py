@@ -403,7 +403,7 @@ def dealUrl(mtitle, murl, objects, _sync):
                     pass
             else:
                 pass
-            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/Music/' + quote(os.path.basename(flacPath),
+            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/AutoMusic/' + quote(os.path.basename(flacPath),
                                                                                            'utf-8')
             shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
                                      '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
@@ -454,7 +454,7 @@ class onedrive:
         account = Account(credentials=credentials)  # credentials=credentials)
         storage = account.storage()
         my_drive = storage.get_default_drive()
-        pro = my_drive.get_item_by_path('/share/Music')
+        pro = my_drive.get_item_by_path('/share/AutoMusic')
         pro.upload_file(item=_path)
         return useTool().filesafer("o365_token.txt")
 

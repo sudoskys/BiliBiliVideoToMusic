@@ -81,7 +81,7 @@ jobs:
         # asyncio aiohttp
     - name: Run
       run: |
-        python autoApiRun.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.audiorssurl }}
+        python autoApiRun.py ${{ secrets.token }} ${{ secrets.autoID }} ${{ secrets.rssurl }} ${{ secrets.apptokens }} ${{ secrets.appids }} ${{ secrets.appkeys }}
 
     - name: commit
       env:
