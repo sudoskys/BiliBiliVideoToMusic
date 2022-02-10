@@ -52,7 +52,7 @@ mains.py --->win&linux editon
 
 
 #### RSS推送用户
-* 源(linuxdown_git.py)
+* 源(gitPush.py)
 需要自建 [Rsshub](https://docs.rsshub.app/) 来获得网络源，或者使用公开项目的服务！详见  .
 
 * Fork 本仓库并设置secrets
@@ -95,9 +95,9 @@ USE mains.py
 填写 data/userdata.yaml，运行即可.
 
 
-## 实现逻辑(linuxdown_git.py)
+## 实现逻辑(gitPush.py)
 
->具体代码详见 linuxdown_git.py （windows环境下使用main.py）
+>具体代码详见 gitPush.py （windows环境下使用main.py）
 拉取RSS-->比对数据+录入数据-->计算出更新后的数据-->传入下载提取函数-->发送文件-->删除文件树
 
 RSSdata是独立的存储工作员，与主程序之间以rssdata.yaml关联
@@ -137,7 +137,7 @@ E[TG] --> S[写入报告]
 ├── LICENSE   //协议
 ├── LICENSE.txt
 ├── linuxdown_audio.py   //  rss测试版本， 歌单下载，因为api受限
-├── linuxdown_git.py    //  rss推送版本， github action 运行目标
+├── gitPush.py    //  rss推送版本， github action 运行目标
 ├── log.txt
 ├── main.py  // linux&win都可以用的交互式下载版本
 ├── mods
