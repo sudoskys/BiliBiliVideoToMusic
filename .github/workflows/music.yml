@@ -95,7 +95,7 @@ jobs:
         echo "git commit: 上传于 $datime"
        
         if [ -n "$(git status -s)" ];then
-            # git pull
+            git pull
             git add .
             git commit -m "自动化魔法阵上传 $datime" -a
         fi
