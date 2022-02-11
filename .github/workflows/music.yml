@@ -4,8 +4,8 @@
 name: Update musicnie
 
 on: 
-  schedule:
-      - cron: '0 22 * * *'
+#  schedule:
+#      - cron: '0 22 * * *'
   watch:
       types: [started]
 jobs:
