@@ -25,6 +25,8 @@
 
 ⚠ 请勿推送超长视频(>10min)，避免风险
 
+⚠ 请不要直接部署在Github Action服务上，本仓库的yml用作任务流可用性测试  https://www.blueskyxn.com/202107/4731.html
+
 ⚠ Liunx部署RSS推送  see music.yml，变量需要手动配置.
 
 ## 开始
