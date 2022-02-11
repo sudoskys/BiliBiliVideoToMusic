@@ -25,6 +25,8 @@ This project allows you to synchronize the music of your favorite erchuang video
 
 ⚠ Do not push super long videos (>10min) to avoid risks
 
+⚠ Please do not deploy directly on the Github Action service, the yml of this repository is used for task flow usability testing
+
 ⚠ Liunx deploys RSS push see music.yml, the variables need to be configured manually.
 
 ## Start
