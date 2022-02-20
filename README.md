@@ -107,12 +107,10 @@ RSSdata is an independent storage worker, associated with the main program by rs
 
 ![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/main/docs/workflow.png)
 
-
-````
-mermaid
+````mermaid
 graph TB
 
-A (pull RSS) ---Comparison input--> B[data]
+A(pull RSS)--Comparison input--> B[data]
 
 B[data] --> C{Calculate updated entry?}
 
@@ -121,9 +119,11 @@ C{Calculate updated entry?} -- NEW --> D[Download Extract]
 C{Compute updated entry?} -- NO new --> S
 
 D[Download Extraction] --Push --> E[TG]
+
 E -- delete data if successful --> B
 
 E[TG] --> S[write report]
+
 ````
 
 ### Directory structure description
