@@ -108,11 +108,10 @@ RSSdata是独立的存储工作员，与主程序之间以rssdata.yaml关联
 ![v](https://github.com/sudoskys/BiliBiliVideoToMusic/raw/main/docs/workflow.png)
 
 
-```
-mermaid
+```mermaid
 graph TB
 
-A(拉取RSS) ---比对录入--> B[数据]
+A(拉取RSS)--比对录入--> B[数据]
 
 B[数据] --> C{计算更新的条目?}
 
