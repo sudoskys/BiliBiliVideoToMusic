@@ -143,7 +143,7 @@ class flacInfo:
         # add FLAC tag data
         audio["TITLE"] = self.Name
         audio["ARTIST"] = self.userName
-        audio["ALBUM"] = self.Name
+        audio["ALBUM"] = "ASOUL二创"
         audio["COMPOSER"] = self.userTname
         audio["ORGANIZATION"] = "ASOUL二创"
         # audio["CATALOGNUM"] = self.catno
