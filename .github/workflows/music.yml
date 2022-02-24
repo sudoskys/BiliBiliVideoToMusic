@@ -39,6 +39,10 @@ jobs:
       continue-on-error: true
       run: |
         python autoApiRenew.py
+    - name: Renew api
+      continue-on-error: true
+      run: |
+        python autoApiRun.py
     - name: commit
       env:
         TZ: 'CST-8'
