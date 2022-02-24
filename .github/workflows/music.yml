@@ -39,7 +39,8 @@ jobs:
       continue-on-error: true
       run: |
         python autoApiRenew.py
-    - name: Renew api
+        # after renew must run auto ，or will create many same data
+    - name: RUN Atuo
       continue-on-error: true
       run: |
         python autoApiRun.py  ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }} ${{ secrets.apptokens }} ${{ secrets.appids }} ${{ secrets.appkeys }}
