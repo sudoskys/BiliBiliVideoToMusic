@@ -63,6 +63,7 @@ class useTool:
 
     def sData(self, file_name, tables):
         self.filesafer(file_name)
+        # 用isinstance更好.
         if type(tables) == type({}) or type(tables) == type(["x"]):
             try:
                 from ruamel.yaml import YAML
@@ -403,9 +404,9 @@ def dealUrl(mtitle, murl, objects, _sync):
                     pass
             else:
                 pass
-            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/AutoMusic/' + quote(os.path.basename(flacPath),
-                                                                                           'utf-8')
-            shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动化  #R3 " +
+            syncurl = 'https://onedrive-vercel-index-navy-three.vercel.app/AutoMusic/' + quote(
+                os.path.basename(flacPath), 'utf-8')
+            shut = objects.postAudio(flacPath, mtitle + '\n' + murl + "\n#音乐提取 #自动寻址  #R4 " +
                                      '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
             # _token_ = onedrive(sys.argv[4]).upload(flacPath, sys.argv[5], sys.argv[6])
             _token_ = _sync.upload(flacPath)
@@ -418,7 +419,7 @@ def dealUrl(mtitle, murl, objects, _sync):
         road = dataPull().youGet(mtitle, useTool().filesafer("work/music/"), murl, murl)
         if road:
             flacPath = useTool().pydubTrans(road, "flac")
-            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动化 R1", mtitle)
+            shut = objects.postAudio(flacPath, mtitle + murl + " #音乐提取 #自动寻址 R1", mtitle)
             os.remove(shut)
         else:
             mLog("err", "Fail to get info " + murl + '  -' + mtitle).wq()
