@@ -19,7 +19,7 @@ __version__ = '2月102120'
 class useTool:
     # github：sudoskys
     def __init__(self):
-        self.debug = True
+        self.debug = False
         import os
         self.home = os.getcwd()
 
