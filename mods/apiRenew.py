@@ -179,11 +179,12 @@ class apiRenew(object):
             # logging.debug(older)
             if len(list(older)) != 0:
                 deal = {i: newer.get(i) for i in newer.keys() if i not in older.keys()}
-                total = older.update(newer)
-                # {**older, **newer}
+                # total = older.update(newer)
+                total = {**older, **newer}
             else:
                 total = newer
                 deal = newer
+
             useTool().sData("data/autoapi/rank.yaml", total)
             logging.debug(deal)
             # 注册任务

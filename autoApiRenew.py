@@ -34,7 +34,7 @@ if RES:
     key = apiRenew().doData(RES)
     if key:
         logging.info(key)
-        apiRenew().cancelTask(key)
+        #apiRenew().cancelTask(key)
 
 
 '''
