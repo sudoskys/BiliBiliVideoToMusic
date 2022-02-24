@@ -61,6 +61,7 @@ class useTool:
                 print("Error:NOT FOUND FILE 没有找到文件或读取文件失败")
                 return False
 
+
     def sData(self, file_name, tables):
         self.filesafer(file_name)
         # 用isinstance更好.
