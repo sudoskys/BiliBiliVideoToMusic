@@ -559,14 +559,14 @@ def mian(lmain, data, key):
 
 # channal id ,please use @getidsbot get this value!
 
-import logging.config
+#import logging.config
 import os
 import shutil
 import sys
 import time
 
-logging.config.fileConfig("logger/pull.conf")
-logger = logging.getLogger('fileAndConsole')
+#logging.config.fileConfig("logger/pull.conf")
+#logger = logging.getLogger('fileAndConsole')
 
 lme = {'token': sys.argv[1],
        'objectID': sys.argv[2],
