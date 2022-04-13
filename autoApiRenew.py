@@ -19,7 +19,7 @@ __version__ = '2月102058'
 # !python -m pip install --upgrade pip
 # !pip install requests tabulate mutagen feedparser ruamel.yaml
 
-from mods.apiRenew import apiRenew, logging
+from mods.apiRenew import apiRenew
 data = {"search_type": "video",
         "keyword": "ASOUL 原创曲",
         "order": "pubdate",
@@ -33,7 +33,7 @@ RES = apiRenew().apiInit(data)
 if RES:
     key = apiRenew().doData(RES)
     if key:
-        logging.info(key)
+        print(key)
         #apiRenew().cancelTask(key)
 
 
