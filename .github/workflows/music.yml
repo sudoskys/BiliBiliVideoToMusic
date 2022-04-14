@@ -35,15 +35,6 @@ jobs:
     - name: Run
       run: |
         python gitPush.py ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }} ${{ secrets.apptokens }} ${{ secrets.appids }} ${{ secrets.appkeys }}
-    - name: Renew api
-      continue-on-error: true
-      run: |
-        python autoApiRenew.py
-        # after renew must run auto ，or will create many same data
-    - name: RUN Atuo
-      continue-on-error: true
-      run: |
-        python autoApiRun.py  ${{ secrets.token }} ${{ secrets.objectID }} ${{ secrets.rssurl }} ${{ secrets.apptokens }} ${{ secrets.appids }} ${{ secrets.appkeys }}
     - name: commit
       env:
         TZ: 'CST-8'
