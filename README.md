@@ -2,6 +2,10 @@
 
 #### 由于哔哩哔哩风控，youget不能工作，本项目不再维护。代码库仅供参考。
 
+#### 下游可用的重构项目
+
+https://github.com/sudoskys/Tool-Asoul-Music
+
 ![counter](https://count.getloli.com/get/@sudoskys-github-BiliBiliVideoToMusic?theme=moebooru)
 
 [![MIT License](https://img.shields.io/badge/LICENSE-MIT-ff69b4)](http://choosealicense.com/licenses/mit/)   ![u](https://img.shields.io/badge/USE-python-green)   [![s](https://img.shields.io/badge/Sponsor-Alipay-ff69b4)](https://azz.net/ly233)
