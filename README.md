@@ -1,10 +1,12 @@
 ## BiliBiliVideoToMusic
 
-#### 由于哔哩哔哩风控，youget不能工作，本项目不再维护。代码库仅供参考。
+#### 由于哔哩哔哩风控，youget不能工作，本项目待修复。
+代码库仅供参考。
 
-#### 下游可用的重构项目
+#### 项目已经在下游重构并更容易部署！
 
 https://github.com/sudoskys/Tool-Asoul-Music
+
 
 ![counter](https://count.getloli.com/get/@sudoskys-github-BiliBiliVideoToMusic?theme=moebooru)
 
