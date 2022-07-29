@@ -10,8 +10,10 @@ https://github.com/sudoskys/Tool-Asoul-Music
 
 ![counter](https://count.getloli.com/get/@sudoskys-github-BiliBiliVideoToMusic?theme=moebooru)
 
-[![MIT License](https://img.shields.io/badge/LICENSE-MIT-ff69b4)](http://choosealicense.com/licenses/mit/)   ![u](https://img.shields.io/badge/USE-python-green)   [![s](https://img.shields.io/badge/Sponsor-Alipay-ff69b4)](https://azz.net/ly233)
+[![MIT License](https://img.shields.io/badge/LICENSE-MIT-ff69b4)](http://choosealicense.com/licenses/mit/)   ![u](https://img.shields.io/badge/USE-python-green)   [![s](https://img.shields.io/badge/Become-sponsor-DB94A2)](https://dun.mianbaoduo.com/@Sky0717)
 ![v](https://img.shields.io/badge/Version-220209-9cf)  
+
+
 
 ### [English](README.md)  | [中文](README-CN.md) 
 
