@@ -185,9 +185,11 @@ E[TG] --> S[write report]
 - [RSShub](https://docs.rsshub.app/) |Data Feed RSS|
 
 
-## support
-THIS link: https://azz.net/ly233
-[![](https://static01.imgkr.com/temp/5808cb7e9e6340409bd07afc0e5ca723.png)](https://azz.net/ly233)
+#### Support
+
+如果你觉得代码有点意思，可以通过无障碍赞助地址投喂我。
+
+[![s](https://img.shields.io/badge/Become-sponsor-DB94A2)](https://dun.mianbaoduo.com/@Sky0717)
 
 ------------------------------
 
